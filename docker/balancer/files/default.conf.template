@@ -1,0 +1,20 @@
+map $http_x_canary $pool {
+    default "weighted";
+    canary  "canary";
+}
+
+upstream weighted  {
+    server ${PRODUCTION} weight=9;
+    server ${CANARY} weight=1;
+}
+
+upstream canary  {
+    server ${CANARY};
+}
+
+server {
+    listen      80 default_server;
+    location / {
+        proxy_pass  http://$pool;
+    }
+}

@@ -1,0 +1,9 @@
+0.0.0.0:80 {
+	tls off
+	log stdout
+	errors stderr
+	root /var/www/html
+	markdown / {
+		ext .md .txt
+	}
+}

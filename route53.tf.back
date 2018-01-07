@@ -1,0 +1,47 @@
+data "aws_route53_zone" "smartbrood_net_private" {
+  name         = "smartbrood.net."
+  private_zone = true
+}
+
+data "aws_route53_zone" "smartbrood_net_public" {
+  name         = "smartbrood.net."
+  private_zone = false
+}
+
+resource "aws_route53_record" "balancer" {
+  zone_id = "${data.aws_route53_zone.smartbrood_net_public.zone_id}"
+  name    = "balancer.${data.aws_route53_zone.smartbrood_net_public.name}"
+  type    = "A"
+
+  alias {
+    name                   = "${module.balancer.dns_name}"
+    zone_id                = "${module.balancer.zone_id}"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "production" {
+  zone_id = "${data.aws_route53_zone.smartbrood_net_private.zone_id}"
+  name    = "production.${data.aws_route53_zone.smartbrood_net_private.name}"
+  type    = "A"
+
+  alias {
+    name                   = "${module.production.dns_name}"
+    zone_id                = "${module.production.zone_id}"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "canary" {
+  zone_id = "${data.aws_route53_zone.smartbrood_net_private.zone_id}"
+  name    = "canary.${data.aws_route53_zone.smartbrood_net_private.name}"
+  type    = "A"
+
+  alias {
+    name                   = "${module.canary.dns_name}"
+    zone_id                = "${module.canary.zone_id}"
+    evaluate_target_health = false
+  }
+}
+
+
