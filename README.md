@@ -17,7 +17,7 @@ curl --header "X-Canary: canary" http://{alb_dns_name} - check load balancer. al
 terraform destroy - delete resources from AWS.
 
 
-Use commands below instead of "make apply" if you don't have "make":
+Use commands below instead of "make apply" if you don't have "make" or need to change path for public ssh key:
 
 terraform init
 terraform apply -var 'public_key_path=[path_to_public_ssh_key]'
