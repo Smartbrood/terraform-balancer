@@ -16,8 +16,7 @@ provider "random" {
 }
 
 module "key-pair" {
-    source          = "Smartbrood/key-pair/aws"
-    version         = "0.4.0"
+    source          = "./modules/terraform-aws-key-pair"
     public_key_path = "${var.public_key_path}"
 }
 
