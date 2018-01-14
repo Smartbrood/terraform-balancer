@@ -14,7 +14,7 @@ resource "aws_ecs_task_definition" "balancer" {
 
 resource "aws_ecs_service" "balancer" {
     name            = "balancer"
-    cluster         = "${var.cluster_name}"
+    cluster         = "${var.environment}-${random_pet.this.id}"
     task_definition = "${aws_ecs_task_definition.balancer.arn}"
     desired_count   = "${var.balancer_count}"
 

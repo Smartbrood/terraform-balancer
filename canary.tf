@@ -9,7 +9,7 @@ resource "aws_ecs_task_definition" "canary" {
 
 resource "aws_ecs_service" "canary" {
     name            = "canary"
-    cluster         = "${var.cluster_name}"
+    cluster         = "${var.environment}-${random_pet.this.id}"
     task_definition = "${aws_ecs_task_definition.canary.arn}"
     desired_count   = "${var.canary_count}"
 

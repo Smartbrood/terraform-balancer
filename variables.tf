@@ -8,19 +8,16 @@ variable "public_key_path" {
   default = "~/.ssh/id_rsa.pub"
 }
 
+variable "environment" {
+  description = "Name for environment."
+  default = "stage"
+}
+
 variable "tags" {
   default = {
-    Name        = "Balancer"
-    Project     = "Balancer"
-    Environment = "stage"
     Repository  = "terraform-balancer"
     Terraform   = "true"
   }
-}
-
-variable "cluster_name" {
-  description = "ECS cluster name."
-  default = "Balancer"
 }
 
 variable "balancer_count" {

@@ -34,15 +34,15 @@ module "vpc" {
     private_subnet_a = "10.3.4.0/24"
     private_subnet_b = "10.3.5.0/24"
     private_subnet_c = "10.3.6.0/24"
-    tags             = "${var.tags}"
+    tags = "${merge(var.tags, map("Name", "${var.environment}-${random_pet.this.id}", "Environment", "${var.environment}"))}"
 }
 
 module "security_group" {
     source      = "./modules/terraform-aws-security-group"
-    name        = "ecs-${random_pet.this.id}"
+    name        = "${var.environment}-${random_pet.this.id}"
     description = "For EC2 instances in ECS cluster"
     vpc_id      = "${module.vpc.values["vpc"]}"
-    tags        = "${var.tags}"
+    tags = "${merge(var.tags, map("Name", "${var.environment}-${random_pet.this.id}"))}"
     ingress_rules_from_any  = ["ssh-22-tcp", "https-443-tcp", "http-80-tcp"]
     egress_rules_to_any     = ["ssh-22-tcp", "https-443-tcp", "http-80-tcp"]
     ingress_rules           = ["any"]
@@ -55,7 +55,7 @@ module "ecs" {
     source                = "./modules/terraform-aws-ecs"
 #    ami                   = "ami-4cbe0935"
     ami_update            = "true"
-    cluster_name          = "${var.cluster_name}" 
+    environment           = "${var.environment}"
     pet_name              = "${random_pet.this.id}"
     security_group        = "${module.security_group.id}"
     instance_type         = "t2.micro"
@@ -66,5 +66,5 @@ module "ecs" {
     subnet_public_zone_b  = "${module.vpc.values["public_subnet_b"]}"
     count_public_c        = "0"
     subnet_public_zone_c  = "${module.vpc.values["public_subnet_c"]}"
-    tags                  = "${var.tags}"
+    tags = "${merge(var.tags, map("Name", "${var.environment}-${random_pet.this.id}", "Environment", "${var.environment}"))}"
 }

@@ -1,5 +1,14 @@
-variable "cluster_name" {
-  description = "ECS cluster Name"
+variable "environment" {
+  description = "Name for environment."
+}
+
+variable "pet_name" {
+  description = "Random name - used as part of ec2_iam_role name."
+}
+
+variable "tags" {
+  description = "Map with tags."
+  type = "map"
 }
 
 variable "ami_update" {
@@ -14,15 +23,6 @@ variable "ami" {
 
 variable "security_group" {
   description = "The ID of security group."
-}
-
-variable "pet_name" {
-  description = "Random name - used as part of ec2_iam_role name."
-}
-
-variable "tags" {
-  description = "Map with tags."
-  type = "map"
 }
 
 variable "instance_type" {

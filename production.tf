@@ -9,7 +9,7 @@ resource "aws_ecs_task_definition" "production" {
 
 resource "aws_ecs_service" "production" {
     name            = "production"
-    cluster         = "${var.cluster_name}"
+    cluster         = "${var.environment}-${random_pet.this.id}"
     task_definition = "${aws_ecs_task_definition.production.arn}"
     desired_count   = "${var.production_count}"
 
