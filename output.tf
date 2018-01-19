@@ -3,5 +3,5 @@ output "data_source_values" {
 }
 
 output "balancer_dns_name" {
-  value = "${aws_alb.balancer.dns_name}"
+  value = "${aws_alb.public.dns_name}"
 }

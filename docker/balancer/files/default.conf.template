@@ -1,20 +1,31 @@
-map $http_x_canary $pool {
-    default "weighted";
-    canary  "canary";
-}
-
 upstream weighted  {
-    server ${PRODUCTION} weight=9;
-    server ${CANARY} weight=1;
+    server ${PRIVATE_ALB} weight=9;
+    server localhost:8080 weight=1;
 }
 
 upstream canary  {
-    server ${CANARY};
+    server ${PRIVATE_ALB};
 }
 
 server {
-    listen      80 default_server;
+    listen 80 default_server;
+
+    if ($http_x_canary) { rewrite ^(.*)$ /canary/$1 last; }
+
     location / {
-        proxy_pass  http://$pool;
+        proxy_pass  http://weighted;
+    }
+
+    location /canary {
+        proxy_pass  http://canary;
+        internal;
+    }
+}
+
+server {
+    listen  8080 default_server;
+    rewrite ^(.*)$ /canary/$1 last;
+    location /canary {
+        proxy_pass  http://canary;
     }
 }

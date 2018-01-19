@@ -19,12 +19,8 @@
          ],
         "links": [],
         "environment": [{
-            "name": "PRODUCTION",
-            "value": "${ PRODUCTION }"
-         },
-         {
-            "name": "CANARY",
-            "value": "${ CANARY }"
+            "name": "PRIVATE_ALB",
+            "value": "${ PRIVATE_ALB }"
          }],
         "mountPoints": [],
         "volumesFrom": [],
